@@ -1,0 +1,183 @@
+{
+  "Version": "2019-10-30",
+  "StartAction": "fa25500f-34b7-47fc-966c-84d97a6207e7",
+  "Metadata": {
+    "entryPointPosition": {
+      "x": 28.8,
+      "y": 39.2
+    },
+    "ActionMetadata": {
+      "9f0ed1ed-0563-4a9b-94c4-2ca09cef98b2": {
+        "position": {
+          "x": 782.4,
+          "y": 44.8
+        }
+      },
+      "555977d2-c631-473a-a3ba-f6d021d7866b": {
+        "position": {
+          "x": 357.6,
+          "y": 18.4
+        },
+        "parameters": {
+          "QueueId": {
+            "displayName": "BurgerBreeze queue"
+          }
+        },
+        "queue": {
+          "text": "BurgerBreeze queue"
+        }
+      },
+      "fa25500f-34b7-47fc-966c-84d97a6207e7": {
+        "position": {
+          "x": 138.4,
+          "y": 21.6
+        },
+        "parameters": {
+          "LexV2Bot": {
+            "AliasArn": {
+              "displayName": "TestBotAlias",
+              "useLexBotDropdown": true,
+              "lexV2BotName": "BurgerBreeze"
+            }
+          }
+        },
+        "useLexBotDropdown": true,
+        "lexV2BotName": "BurgerBreeze",
+        "lexV2BotAliasName": "TestBotAlias",
+        "conditionMetadata": [
+          {
+            "id": "3de017b3-cf9c-4271-9ae5-d46a28bb8fb1",
+            "operator": {
+              "name": "Equals",
+              "value": "Equals",
+              "shortDisplay": "="
+            },
+            "value": "OrderBurger"
+          }
+        ]
+      },
+      "f90d0acc-d71c-416c-a06c-7c239a190346": {
+        "position": {
+          "x": 236,
+          "y": 266.4
+        }
+      },
+      "499bd116-0c22-43da-b2bc-11c88c4b2ad7": {
+        "position": {
+          "x": 797.6,
+          "y": 332.8
+        }
+      }
+    },
+    "Annotations": [],
+    "name": "BurgerBreeze",
+    "description": "",
+    "type": "contactFlow",
+    "status": "PUBLISHED",
+    "hash": {}
+  },
+  "Actions": [
+    {
+      "Parameters": {},
+      "Identifier": "9f0ed1ed-0563-4a9b-94c4-2ca09cef98b2",
+      "Type": "EndFlowExecution",
+      "Transitions": {}
+    },
+    {
+      "Parameters": {
+        "QueueId": "arn:aws:connect:eu-central-1:211125390405:instance/02a714f4-5a69-47a1-8b31-ccb5e262e0d3/queue/846c03b7-b309-47e4-9b74-2c7ada0a0cff"
+      },
+      "Identifier": "555977d2-c631-473a-a3ba-f6d021d7866b",
+      "Type": "UpdateContactTargetQueue",
+      "Transitions": {
+        "NextAction": "9f0ed1ed-0563-4a9b-94c4-2ca09cef98b2",
+        "Errors": [
+          {
+            "NextAction": "f90d0acc-d71c-416c-a06c-7c239a190346",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "welcome to the BurgerBreeze.",
+        "LexV2Bot": {
+          "AliasArn": "arn:aws:lex:eu-central-1:211125390405:bot-alias/WBLHSBQOSY/TSTALIASID"
+        }
+      },
+      "Identifier": "fa25500f-34b7-47fc-966c-84d97a6207e7",
+      "Type": "ConnectParticipantWithLexBot",
+      "Transitions": {
+        "NextAction": "f90d0acc-d71c-416c-a06c-7c239a190346",
+        "Conditions": [
+          {
+            "NextAction": "555977d2-c631-473a-a3ba-f6d021d7866b",
+            "Condition": {
+              "Operator": "Equals",
+              "Operands": [
+                "OrderBurger"
+              ]
+            }
+          }
+        ],
+        "Errors": [
+          {
+            "NextAction": "555977d2-c631-473a-a3ba-f6d021d7866b",
+            "ErrorType": "NoMatchingCondition"
+          },
+          {
+            "NextAction": "f90d0acc-d71c-416c-a06c-7c239a190346",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "if you want to change the menu \ncan you connect again."
+      },
+      "Identifier": "f90d0acc-d71c-416c-a06c-7c239a190346",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "499bd116-0c22-43da-b2bc-11c88c4b2ad7",
+        "Errors": [
+          {
+            "NextAction": "499bd116-0c22-43da-b2bc-11c88c4b2ad7",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "LoopCount": "2"
+      },
+      "Identifier": "499bd116-0c22-43da-b2bc-11c88c4b2ad7",
+      "Type": "Loop",
+      "Transitions": {
+        "NextAction": "fa25500f-34b7-47fc-966c-84d97a6207e7",
+        "Conditions": [
+          {
+            "NextAction": "fa25500f-34b7-47fc-966c-84d97a6207e7",
+            "Condition": {
+              "Operator": "Equals",
+              "Operands": [
+                "ContinueLooping"
+              ]
+            }
+          },
+          {
+            "NextAction": "fa25500f-34b7-47fc-966c-84d97a6207e7",
+            "Condition": {
+              "Operator": "Equals",
+              "Operands": [
+                "DoneLooping"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
